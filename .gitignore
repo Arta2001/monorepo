@@ -1,0 +1,10 @@
+ ../../.DS_Store
+../../javaScript/.DS_Store
+../../javaScript/app.js
+../../javaScript/index.js
+../../javaScript/node_modules/
+../../javaScript/package-lock.json
+../../javaScript/package.json
+../../package-lock.json
+../.DS_Store
+../../typeScript/.DS_Store

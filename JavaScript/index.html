@@ -1,1 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<style>
+body {
+  font-family: sans-serif;
+  max-width: 450px;
+  margin: 0 auto;
+  padding: 30px;
+  font-family: "Maven Pro", sans-serif;
+  background-color:#e1ebed;
+  padding: 10px;
+}
+
+button {
+    background-color:#669999;
+    border-color:#669999;
+    padding: 11px;
+    border: none;
+    border-radius: 5em;
+    font-size: 15px;
+    color: #fff;
+    float: left; 
+    margin: 0.1em;
+}
+button:hover {
+      background:  #a3c2c2;
+      }
+
+h1 {
+  font-size: 40px;
+  text-align: center;
+  color:#55555e;
+  font-family:  Monospace;
+}
+
+h2 {
+  font-family:  Monospace;
+  text-align: center;
+  color:#B8B8B8;
+}
+
+p {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.checkbox-round {
+    background-color: white;
+    border-radius: 50%;
+    vertical-align: middle;
+    border: 1px solid  #669999;
+    appearance: none;
+    -webkit-appearance: none;
+   content: "\2714";
+   border: 0.1em solid #669999;;
+   border-radius: 50%;
+   display: inline-block;
+   width: 1em;
+   height: 1em;
+   transition: .2s;
+}
+
+.checkbox-round:checked {
+    background-color:#86baba;
+}
+
+form {
+      width: 102%;
+      height: 90%;
+      padding: 90px;
+      border-radius: 6px;
+      background: #fff;
+      box-shadow: 0 0 8px  #669999; 
+      }
+
+
+#checkboxForm label{
+  
+    text-align:left ;
+}
+      #checkboxForm label {
+            font-size: 16px; /* Set font size */
+            cursor: pointer; /* Change cursor on hover */
+        }
+
+        /* Style for checked checkboxes (optional) */
+        #checkboxForm input[type="checkbox"]:checked + label {
+           
+            font-weight: bold; /* Make checked checkboxes bold */
+        }
+
+</style>
+<body>
+<br>
+    <header class="pen-intro">
+        <h1>Checkbox Form</h1>
+      </header>
+      
+     
+      <form id="checkboxForm">
+        <h2>Choose your values</h2>
+      <br>
+
+           <input type="checkbox"  class="checkbox-round" id="checkbox1" value="Internship" checked>
+           <label for="checkbox" >Internship</label>
+           <input type="checkbox"  class="checkbox-round" id="checkbox2" value="Pabau"> 
+           <label for="checkbox" >Pabau</label>
+            <input type="checkbox"  class="checkbox-round" id="checkbox3" value="Employment"> 
+            <label for="checkbox" >Employment</label>
+            <input type="checkbox"  class="checkbox-round" id="checkbox4" value="Career">
+            <label for="checkbox" >Career</label><br><br><br>
+            <hr/>
+        <br>
+        <h2>Select Action</h2>
+            <br>
+        
+            <button style="width:33.3%" type="button" id="shuffleButton">Shuffle Values</button>
+            <input hidden type="text" id="newValuesInput">
+        <button type="button" id="changeButton">Change Values</button>
+            <button  type="button" id="showSelectedButton">Show Selected Values</button>
+    </form>
+    
+        <div id="selectedValues"></div>
+
+  <script>
+            // Get references to the checkboxes and the selectedValues div
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const selectedValuesDiv = document.getElementById('selectedValues');
+
+    // Function to shuffle an array randomly
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    // Function to shuffle the order of checkboxes
+    function shuffleCheckboxValues() {
+        const form = document.getElementById('checkboxForm');
+        const checkboxes = Array.from(form.querySelectorAll('input[type="checkbox"]'));
+
+        // Clone the checkboxes and their labels
+        const clonedCheckboxes = checkboxes.map((checkbox) => {
+            const clone = checkbox.cloneNode(true);
+            const label = document.createElement('label');
+            label.htmlFor = clone.id;
+            label.textContent = clone.value;
+            return { checkbox: clone, label };
+        });
+
+        // Shuffle the cloned checkboxes
+        shuffleArray(clonedCheckboxes);
+
+        // Clear the form and append the shuffled checkboxes and labels back
+        form.innerHTML = '';
+        clonedCheckboxes.forEach(({ checkbox, label }) => {
+            form.appendChild(checkbox);
+            form.appendChild(label);
+        });
+    }
+
+    // Add a click event listener to the "Shuffle Values" button
+    document.getElementById('shuffleButton').addEventListener('click', shuffleCheckboxValues);
+
+            // Function to change checkbox values
+        function changeCheckboxValues() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const newValuesInput = document.getElementById('newValuesInput').value;
+            const newValues = newValuesInput.split(',').map(value => value.trim());
+
+            checkboxes.forEach((checkbox, index) => {
+                if (newValues[index]) {
+                    checkbox.value = newValues[index];
+                    checkbox.nextElementSibling.textContent = newValues[index];
+                }
+            });
+        }
+
+        // Add a click event listener to the "Change Values" button
+        document.getElementById('changeButton').addEventListener('click', changeCheckboxValues);
+
+        // Initialize the input field with new values
+        const initialValues = "Job, Pabau 2,React Js,Career";
+        document.getElementById('newValuesInput').value = initialValues;
+    
+
+
+            // Show selected values
+            document.getElementById('showSelectedButton').addEventListener('click', () => {
+                const selectedValues = Array.from(checkboxes)
+                    .filter(checkbox => checkbox.checked)
+                    .map(checkbox => checkbox.value);
+                selectedValuesDiv.textContent = `Selected Values: ${selectedValues.join(', ')}`;
+            });
+ </script>
+</body>
+</html>
